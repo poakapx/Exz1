@@ -180,7 +180,6 @@ public class OpenUserWindowViewModel : INotifyPropertyChanged
             DownloadDocumentCommand = new RelayCommand(DownloadDocument);
             DeleteDocumentCommand = new RelayCommand(DeleteDocument);
 
-            // Инициализация коллекции документов
             Documents = new ObservableCollection<Document>();
         }
 
@@ -190,20 +189,16 @@ public class OpenUserWindowViewModel : INotifyPropertyChanged
 
         private async void UploadDocument(object parameter)
         {
-            // Логика загрузки документа
             string filePath = GetDocumentPathFromUser();
             if (!string.IsNullOrEmpty(filePath))
             {
                 string fileName = Path.GetFileName(filePath);
 
-                // Загрузка документа в Blob Storage
                 bool isUploaded = await UploadToBlobStorage(filePath, fileName);
                 if (isUploaded)
                 {
-                    // Создание объекта документа
                     Document document = new Document { FileName = fileName, FilePath = filePath };
 
-                    // Добавление документа в коллекцию
                     Documents.Add(document);
                 }
                 else
@@ -215,14 +210,12 @@ public class OpenUserWindowViewModel : INotifyPropertyChanged
 
         private void DownloadDocument(object parameter)
         {
-            // Логика скачивания документа
             Document document = parameter as Document;
             if (document != null)
             {
                 string filePath = document.FilePath;
                 string fileName = document.FileName;
 
-                // Скачивание документа на рабочий стол
                 string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                 string destinationPath = Path.Combine(desktopPath, fileName);
                 File.Copy(filePath, destinationPath, true);
@@ -231,15 +224,12 @@ public class OpenUserWindowViewModel : INotifyPropertyChanged
 
         private async void DeleteDocument(object parameter)
         {
-            // Логика удаления документа
             Document document = parameter as Document;
             if (document != null)
             {
-                // Удаление документа из Blob Storage
                 bool isDeleted = await DeleteFromBlobStorage(document.FilePath);
                 if (isDeleted)
                 {
-                    // Удаление документа из коллекции
                     Documents.Remove(document);
                 }
                 else
@@ -251,7 +241,6 @@ public class OpenUserWindowViewModel : INotifyPropertyChanged
 
         private async Task<bool> UploadToBlobStorage(string filePath, string fileName)
         {
-            // Логика загрузки файла в Blob Storage
             try
             {
                 string connectionString = "DefaultEndpointsProtocol=https;AccountName=pavlo_test;AccountKey=TEST1TEST1TEST1TEST1;EndpointSuffix=core.windows.net\r\n";
@@ -266,14 +255,12 @@ public class OpenUserWindowViewModel : INotifyPropertyChanged
             }
             catch (Exception ex)
             {
-                // Обработка ошибок загрузки
                 return false;
             }
         }
 
         private async Task<bool> DeleteFromBlobStorage(string filePath)
         {
-            // Логика удаления файла из Blob Storage
             try
             {
                 string connectionString = "DefaultEndpointsProtocol=https;AccountName=pavlo_test;AccountKey=TEST1TEST1TEST1TEST1;EndpointSuffix=core.windows.net\r\n";
@@ -289,8 +276,6 @@ public class OpenUserWindowViewModel : INotifyPropertyChanged
             }
             catch (Exception ex)
             {
-                // Обработка ошибок удаления
-                // Здесь можно добавить логику обработки и вывода сообщения об ошибке
                 return false;
             }
         }
