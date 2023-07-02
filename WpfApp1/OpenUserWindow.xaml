@@ -1,0 +1,13 @@
+﻿<Window x:Class="WpfApp1.OpenUserWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:WpfApp1"
+        Title="OpenUserWindow" Height="450" Width="800"
+        DataContext="{Binding OpenUserViewModel, Source={StaticResource Locator}}">
+
+    <Grid>
+        <DocumentViewer Document="{Binding Document}" />
+        <Button Content="Download Document" Command="{Binding DownloadDocumentCommand}" Margin="127,263,366,92" />
+        <Button Content="Delete Document" Command="{Binding DeleteDocumentCommand}" Margin="127,154,306,217" />
+    </Grid>
+</Window>
